@@ -229,24 +229,6 @@
                 }
             }
 
-            /*function speedUp() {
-                setTimeout(function() {
-                    if (gameOver === false) {
-                        document.getElementById("popupsInnerDiv").innerHTML = "Speeding Up!"; //alert the player
-                        setTimeout(function() {
-                            document.getElementById("popupsInnerDiv").innerHTML = ""; //delete popup
-                        }, 2000); //2 sec
-
-                        enemySpeed = parseInt(enemySpeed) + 1;
-                        enemySpawnRate = parseInt(enemySpawnRate) - 100;
-
-                        setTimeout(function() {
-                            speedUp();
-                        }, 15000); //15 seconds
-                    }
-                }, 15000); //15 seconds
-            }*/
-
             function speedUp() {
                 if (gameOver === false) {
                     document.getElementById("popupsInnerDiv").innerHTML = "Speeding Up!"; //alert the player
@@ -422,7 +404,7 @@
                         //Chance to lifesteal
                         if (lifesteal == 1) {
                             var rollLS = Math.floor((Math.random() * 100) + 1);
-                            if (rollLS >= 70) { //92
+                            if (rollLS >= 92) { //92
                                 gainALife();
                             }
                         }
@@ -430,7 +412,7 @@
                         //Chance to nuke
                         if (nuke == 1) {
                             var rollNuke = Math.floor((Math.random() * 100) + 1);
-                            if (rollNuke >= 70) { //94
+                            if (rollNuke >= 94) { //94
                                 nukeEnemies();
                             }
                         }
