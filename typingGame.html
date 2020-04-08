@@ -1,0 +1,547 @@
+<html  lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0"> <!--Makes site look good on all devices-->
+        <link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Gotu&display=swap" rel="stylesheet">
+
+        <script src="p5/p5.min.js"></script>
+        <script language="javascript" type="text/javascript" src="p5/addons/p5.dom.min.js"></script>
+        <script language="javascript" type="text/javascript" src="p5/addons/p5.sound.min.js"></script>
+        <script src="enemy.js"></script>
+        <script src="deadPotato.js"></script>
+
+        <title>Potato Prevent</title>
+        <link rel="icon" href="potatoIcon.png" type="image/x-icon"> 
+
+        <style media="screen">
+            body {
+                margin: 0;
+                background-color: #573d1c;/*rgb(66, 66, 66)*/
+                padding-left: 2%;
+                padding-top: 2%;
+                font-family: 'Gotu', sans-serif;
+                overflow: hidden;
+            }
+            input {
+                font-family: 'Gotu', sans-serif;
+            }
+            img {
+                width: 30px;
+                height: 30px;
+            }
+            #display {
+                width: 98%;
+                height: 52%;
+                background-color: #ffffff;
+                border-radius: 10px;
+            }
+            #keyboard {
+                width: 98%;
+                height: 46%;
+                display: inline-block;
+                margin-top: 1.5%;
+                border-radius:10px;
+                text-align:center;
+                font-family: 'Gotu', sans-serif;
+            }
+            #keyboard div {
+                margin-top: 5px; /*space btwn rows*/
+            }
+            #keyboard input {
+                width: 70px; /*key size (previous was 50px)*/
+                height: 70px; /*key size*/
+                background-color: #ffffff;
+                border: 0px;
+                border-radius: 4px;
+                font-size: 100%; /*make font size bigger*/
+            }
+            #keyboard input:focus {
+                outline: none;
+            }
+            #divRow2 {
+                margin-left: -1%; /*offset keyboard*/
+            }
+            #divRow3 {
+                margin-left: -4%; /*offset keyboard*/
+            }     
+            #leftContainer {
+                width: 18%;
+                height: 40%;
+                margin-top: -22%;
+                text-align: center;
+                color: rgb(27, 151, 223);
+            }
+            #livesDisp {
+                width: 100%;
+                height: 40%;
+                padding-top: 5px;
+                text-align: left;
+            }
+            .hearts {
+                display: none;
+            }
+            #dispLetter {
+                width: 14%;
+                height: 40%;
+                float: right;
+                margin-top: -14%;
+                font-size: 90px;
+                color: rgb(27, 151, 223);
+            }
+            #popupsDiv {
+                width: 100%;
+                height: 15%;
+                position: fixed;
+                top: 5%;
+                left: 0;
+                z-index: 5;
+                text-align: center;
+                font-size: 200%;
+                font-weight: bold;
+            }
+            #popupsInnerDiv {
+                width: 40%;
+                height: 100%;
+                margin: auto;
+            }
+            #overlay {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: black;
+                opacity: 0.09;
+            }
+            #lose {
+                width: 100%;
+                text-align: center;
+                font-size: 8vw;
+                color: black;
+                text-shadow: 4px 8px 2px #d1462f;
+                font-family: 'Staatliches', cursive;
+                position: fixed;
+                top: 35%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            #retry {
+                width: 120px;
+                height: 40px;
+                font-size: 20px;
+                font-family: 'Staatliches', cursive;
+            }
+            #mainMenu {
+                width: 120px;
+                height: 40px;
+                font-size: 20px;
+                font-family: 'Staatliches', cursive;
+            }
+        </style>
+       
+
+    </head>
+        
+    <body>
+        <!--Game portion-->
+        <div id="display"></div>
+        <!--End game portion-->
+
+        <div id="keyboard"> <!--begin keyboard-->
+            
+            <div>
+                <input type="button" value="Q">
+                <input type="button" value="W">
+                <input type="button" value="E">
+                <input type="button" value="R">
+                <input type="button" value="T">
+                <input type="button" value="Y">
+                <input type="button" value="U">
+                <input type="button" value="I">
+                <input type="button" value="O">
+                <input type="button" value="P">
+            </div>
+
+            <div id="divRow2">
+                <input type="button" value="A">
+                <input type="button" value="S">
+                <input type="button" value="D">
+                <input type="button" value="F">
+                <input type="button" value="G">
+                <input type="button" value="H">
+                <input type="button" value="J">
+                <input type="button" value="K">
+                <input type="button" value="L">
+            </div>
+            
+            <div id="divRow3">
+                <input type="button" value="Z">
+                <input type="button" value="X">
+                <input type="button" value="C">
+                <input type="button" value="V">
+                <input type="button" value="B">
+                <input type="button" value="N">
+                <input type="button" value="M">
+            </div>
+
+        </div> <!--end keyboard-->
+
+        <div id="leftContainer">
+            <div id="livesDisp">
+                <img class="hearts" src="fullHeart.png">
+                <img class="hearts" src="fullHeart.png">
+                <img class="hearts" src="fullHeart.png">
+                <img class="hearts" src="fullHeart.png">
+                <img class="hearts" src="fullHeart.png">
+                <br>
+                <img class="hearts" src="fullHeart.png">
+                <img class="hearts" src="fullHeart.png">
+                <img class="hearts" src="fullHeart.png">
+                <img class="hearts" src="fullHeart.png">
+                <img class="hearts" src="fullHeart.png">
+            </div>
+
+            <h1>R.I.P. Potatoes: </h1>
+            <h2 id="dispScore">0</h2>
+        </div>
+
+        <div id="dispLetter"></div>
+
+        <div id="popupsDiv">
+            <div id="popupsInnerDiv"></div>
+        </div>
+
+        <script>
+            //Pure JS Start ------------------------------------------------------------
+            var enemySpeed = localStorage.getItem("enemySpeed");
+            var enemySpawnRate = localStorage.getItem("enemySpawnRate"); //in ms
+            var maxLives = localStorage.getItem("numOfLives");
+            var numOfLives = localStorage.getItem("numOfLives");
+            var lifesteal = localStorage.getItem("lifesteal");
+            var nuke = localStorage.getItem("nuke");
+
+            function adjustLives() { //Adjusts amt of lives displayed based on user
+                heartImgs = document.getElementsByClassName("hearts");
+                for (var i = 0; i < numOfLives; i++) {
+                    heartImgs[i].style.display = "inline";
+                    heartImgs[i].classList.add("full");
+                }
+            }
+
+            /*function speedUp() {
+                setTimeout(function() {
+                    if (gameOver === false) {
+                        document.getElementById("popupsInnerDiv").innerHTML = "Speeding Up!"; //alert the player
+                        setTimeout(function() {
+                            document.getElementById("popupsInnerDiv").innerHTML = ""; //delete popup
+                        }, 2000); //2 sec
+
+                        enemySpeed = parseInt(enemySpeed) + 1;
+                        enemySpawnRate = parseInt(enemySpawnRate) - 100;
+
+                        setTimeout(function() {
+                            speedUp();
+                        }, 15000); //15 seconds
+                    }
+                }, 15000); //15 seconds
+            }*/
+
+            function speedUp() {
+                if (gameOver === false) {
+                    document.getElementById("popupsInnerDiv").innerHTML = "Speeding Up!"; //alert the player
+                    setTimeout(function() {
+                        document.getElementById("popupsInnerDiv").innerHTML = ""; //delete popup
+                    }, 2000); //2 sec
+
+                    enemySpeed = parseInt(enemySpeed) + 1;
+                    enemySpawnRate = parseInt(enemySpawnRate) - 100;
+
+                    setTimeout(function() {
+                        speedUp();
+                    }, 15000); //15 seconds
+                }
+            }
+
+            //Run the above functions
+            adjustLives();
+            setTimeout(function() {
+                speedUp();
+            }, 15000); //15 seconds
+
+            //Pure JS End ----------------------------------------------------------------
+
+
+
+            //p5.js Start ----------------------------------------------------------------
+            var letter0; //store the letter to be typed
+            var letterUCkeyCode0; //store the LowerCase keyCode of the letter
+            var letterLCkeyCode0; //store the UpperCase keyCode of the letter
+
+            var lettersArr = ["Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L","Z","X","C","V","B","N","M"]; //store all possible letters
+            var UCkeyCodeArr = ["81","87","69","82","84","89","85","73","79","80","65","83","68","70","71","72","74","75","76","90","88","67","86","66","78","77"];
+            var LCkeyCodeArr = ['113','119','101','114','116','121','117','105','111','112','97','115','100','102','103','104','106','107','108','122','120','99','118','98','110','109'];
+            
+            var displayWidth; //store canvas container's width
+            var displayHeight; //store canvas container's height
+
+            var playerState = 1; //1 = normal, 2 = dead
+
+            var enemyArr = []; //stores enemies
+
+            //var fire = false; //shoot projectile or not
+
+            var deadArr = [];
+            var deadLinger = 200;
+
+            var score = 0;
+            var gameOver = false;
+
+            var lose;
+            var retry;
+            var mainMenu;
+            
+            //Store images
+            var playerImg; 
+            var playerDeadImg1;
+            var playerDeadImg2;
+            var enemyImg;
+            var explodeImg;
+            
+            function preload() {
+                playerImg = loadImage("IsabelleRight1.png");
+                playerDeadImg1 = loadImage("IsabelleHurt2.png");
+                playerDeadImg2 = loadImage("IsabelleHurt1.png");
+                enemyImg = loadImage("potato.png");
+                explodeImg = loadImage("explode.png");
+
+                bgMusic = loadSound("endlessMotionBG.mp3");
+                hurtSelfSound = loadSound("jab.mp3");
+                hurtEnemySound = loadSound("silencer.mp3");
+                powerUpSound = loadSound("metroidPowerUp.mp3");
+            }
+
+            function setup() {
+                //get the width & height of the display containter
+                var displayInfo = document.getElementById('display').getBoundingClientRect();
+                displayWidth = displayInfo.width;
+                displayHeight = displayInfo.height; 
+                
+                var cnv = createCanvas(displayWidth, displayHeight);
+                cnv.parent('display'); //relocate canvas to be inside our div
+
+                chooseLetter(); //choose first letter to initiate game
+
+                spawnEnemy();
+
+                bgMusic.setVolume(0.4); //set to lower volume
+                bgMusic.play();
+            }
+
+            function draw() {
+                if (numOfLives <= 0) { //if no lives left, start death animation
+                    playerState = 2;
+                }
+
+                clear(); //clears background
+                noStroke();
+
+                if (playerState == 1) { //if player is alive...
+                    image(playerImg, 50, 10, displayHeight - 20, displayHeight - 20);
+                }
+                else if (playerState == 2) { //if player is dead...
+                    image(playerDeadImg1, 5, 10, displayHeight - 20, displayHeight - 20);
+                    
+                    setTimeout(function() {
+                        clear(); //delete previous player img
+                        image(playerDeadImg2, 10, 80, displayHeight - 20, displayHeight - 20);
+                        
+                        endGameScreen();
+                    }, 200);
+                    
+                }
+
+                for (var i = 0; i < enemyArr.length; i++) { //run the functions for the enemies
+                    enemyArr[i].show();
+                    enemyArr[i].move();
+                    enemyArr[i].checkPos();
+                }
+
+                for (var i = 0; i < deadArr.length; i++) { //run the functions for the dead potatoes
+                    deadArr[i].show();
+                    deadArr[i].disappear();
+                }
+                
+                //fire animation <-- change to shooting weapon pic?
+                /*if (enemyArr.length > 0) {
+                    if (fire === true) {
+                        stroke(0);
+                    }
+                    strokeWeight(15);
+                    line(155, displayHeight/2, enemyArr[0].x + 10, enemyArr[0].y + 15); //instead of 200, get image.x + image.width
+                }*/
+                
+            }
+            
+            function chooseLetter() {
+                if (gameOver === false) {
+                    var randNum = Math.floor(Math.random() * 26); //generate a random number
+
+                    letter0 = lettersArr[randNum]; //set letter
+                    letterUCkeyCode0 = UCkeyCodeArr[randNum]; //set letter's UpperCase keyCode
+                    letterLCkeyCode0 = LCkeyCodeArr[randNum]; //set letter's LowerCase keyCode
+
+                    document.getElementById("dispLetter").innerHTML = letter0; //display letter
+                    
+                    //reset all borders for the keyboard
+                    var allInputs = document.getElementsByTagName("input");
+                    for (var i = 0; i < allInputs.length; i++) { 
+                        document.getElementsByTagName("input")[i].style.border = "none";
+                    }
+                    
+                    //highlight correct letter
+                    document.getElementsByTagName("input")[randNum].style.border = "solid"; 
+                    document.getElementsByTagName("input")[randNum].style.borderColor = "rgb(27, 151, 223)"; 
+                }
+                
+            }
+            
+            document.onkeypress = function(e) { //check for keypress
+                if (gameOver === false) {
+                    if ((e.keyCode == letterUCkeyCode0) || (e.keyCode == letterLCkeyCode0)) { //if correct key is pressed...                        
+                        //fire = true;
+                        //Grab current enemy's coords and send it to deadPotato
+                        currentX = enemyArr[0].x;
+                        currentY = enemyArr[0].y;
+                        deadArr.push(new deadPotato(currentX, currentY)); //create explosion particle to replace potato
+
+                        hurtEnemySound.setVolume(0.7);
+                        hurtEnemySound.play();
+                        enemyArr.shift(); //delete first enemy
+
+                        //Chance to lifesteal
+                        if (lifesteal == 1) {
+                            var rollLS = Math.floor((Math.random() * 100) + 1);
+                            if (rollLS >= 70) { //92
+                                gainALife();
+                            }
+                        }
+
+                        //Chance to nuke
+                        if (nuke == 1) {
+                            var rollNuke = Math.floor((Math.random() * 100) + 1);
+                            if (rollNuke >= 70) { //94
+                                nukeEnemies();
+                            }
+                        }
+                        
+                        score++;
+                        document.getElementById("dispScore").innerHTML = score;
+
+                        chooseLetter(); //choose another letter
+                    }
+                    else {
+                        loseALife(); //take away one life
+                    }
+                }
+                else if (gameOver === true) {
+                    if ((e.keyCode == 82) || (e.keyCode == 114)) { //if R or r is pressed...
+                        replay();
+                    }
+                    else if ((e.keyCode == 77) || (e.keyCode == 109)) { //if M or m is pressed...
+                        homePage();
+                    }
+                }
+            }
+
+            function spawnEnemy() { //spawn enemies with a delay
+                enemyArr.push(new Enemy());
+
+                setTimeout(function() {
+                    enemyArr.push(new Enemy());
+
+                    setTimeout(function() {
+                        spawnEnemy();
+                    }, enemySpawnRate);
+
+                }, enemySpawnRate);
+            }
+
+            function gainALife() {
+                if (numOfLives == maxLives) { //prevent exceeding max lives
+                    return;
+                }
+                else {
+                    numOfLives = numOfLives + 1; //add 1 life to counter
+
+                    document.getElementById("popupsInnerDiv").innerHTML = "+1 Life"; //alert player
+                    setTimeout(function() {
+                        document.getElementById("popupsInnerDiv").innerHTML = ""; //delete popup
+                    }, 2000); //2 seconds
+
+                    powerUpSound.play();
+
+                    empty = document.getElementsByClassName("empty"); //grab all elements in empty class
+                    empty[0].src="fullHeart.png"; //change right-most img to full heart
+                    empty[0].classList.add("full"); //add full class
+                    empty[0].classList.remove("empty"); //remove empty class
+                }
+            }
+            function loseALife() {
+                numOfLives = numOfLives - 1; //subtract 1 life from counter
+
+                hurtSelfSound.play();
+                
+                full = document.getElementsByClassName("full"); //grab all elements in the full class
+                last = full.length - 1; //get index of right-most full heart
+                full[last].src="emptyHeart.png"; //change to empty heart img
+                full[last].classList.add("empty"); //add empty class
+                full[last].classList.remove("full"); //remove full class
+            }
+
+            function nukeEnemies() {
+                if (enemyArr.length > 0) {
+                    enemyArr = [];
+
+                    document.getElementById("popupsInnerDiv").innerHTML = "Nuked"; //alert player
+                    setTimeout(function() {
+                        document.getElementById("popupsInnerDiv").innerHTML = ""; //delete popup
+                    }, 2000); //2 seconds
+
+                    powerUpSound.play();
+                }
+            }
+
+            function endGameScreen() {
+                noLoop();
+
+                gameOver = true;
+
+                overlay = createDiv();
+                overlay.id("overlay"); //for style
+
+                lose = createDiv("Overrun by potatoes!");
+                lose.id("lose"); //for style
+
+                retry = createButton("Retry (r)");
+                retry.position(window.innerWidth * 0.3, window.innerHeight * 0.7);
+                retry.id("retry");
+                retry.mousePressed(replay); //refresh page
+
+                mainMenu = createButton("Main Menu (m)");
+                mainMenu.position(window.innerWidth * 0.64, window.innerHeight * 0.7)
+                mainMenu.id("mainMenu");
+                mainMenu.mousePressed(homePage); //goes to home page
+            }
+
+            function replay() { //using a function to prevent auto reload
+                window.location.reload();
+            }
+            function homePage() {
+                location.href="index.html";
+            }
+
+        </script>
+
+    </body>
+</html>

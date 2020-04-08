@@ -1,0 +1,318 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://fonts.googleapis.com/css2?family=Gotu&display=swap" rel="stylesheet">
+
+        <title>Potato Prevent</title>
+        <link rel="icon" href="potatoIcon.png" type="image/x-icon"> 
+        
+        <style>
+            body {
+                background-color: #573d1c;
+                font-family: 'Gotu', sans-serif;
+                color: rgb(27, 151, 223);
+                overflow: hidden;
+            }
+            h1 {
+                text-align: center;
+            }
+            h3 {
+                line-height: 0.8;
+            }
+            button {
+                font-family: 'Gotu', sans-serif;
+                font-weight: bold;
+            }
+            img {
+                width: 15px;
+                height: 15px;
+            }
+            #containerLeft {
+                width: 50%;
+                height: 83%;
+                float: left;
+                padding-left: 10px;
+                border-right: solid;
+                border-color: rgb(27, 151, 223);
+            }
+            #containerRight {
+                width: 48%;
+                float: right;
+            }
+            .spacing {
+                height: 1%;
+            }
+            .options { /*not in use*/
+                width: 100%;
+            }
+            .radio {
+                line-height: 0.5;
+            }
+            /*.tooltip {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black;
+            }
+            .tooltipText {
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+                /*Position the tooltip*l/
+                position: absolute;
+                z-index: 1;
+                top: -5px;
+                left: 110%;
+            }
+            .tooltipText::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 100%;
+                margin-top: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent black transparent transparent;
+            }
+            .tooltip:hover .tooltipText {
+                visibility: visible;
+            }*/
+            .tooltipDiv {
+                position: relative;
+                display: inline-block;
+                margin-top: -2%;
+            }
+            .headerName {
+                border-bottom: 1px dotted rgb(27, 151, 223);
+                line-height: 350%;
+            }
+            .tooltipText {
+                visibility: hidden;
+                width: 290px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                font-size: 80%;
+                border-radius: 6px;
+                padding: 5px 0;
+                /*Position the tooltip*/
+                position: absolute;
+                z-index: 1;
+                top: 10px;
+                left: 118%;
+            }
+            .tooltipText::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 100%;
+                margin-top: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent black transparent transparent;
+            }
+            .tooltipDiv:hover .tooltipText {
+                visibility: visible;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Potato Prevent</h1>
+        <!--<div class="spacing"></div>-->
+        
+        <div id="containerLeft">  
+            <h3>Instructions:</h3>
+            <p>Type the correct letter to blow up invader potatoes!</p>
+            <p>The game ends when you run out of lives.</p>
+            <div class="spacing"></div>
+
+            <button onclick="toGame()">Start!</button>
+        </div>
+
+        <div id="containerRight">
+            <h3>Options:</h3>
+            
+            <div> <!--Enemy Speed-->
+                <p>Enemy Speed:</p>
+
+                <label class="radio">
+                    <input type="radio" name="enemySpeed" value="2">
+                    Slow
+                </label>
+                <label class="radio">
+                    <input type="radio" name="enemySpeed" value="5" checked>
+                    Medium
+                </label>
+                <label class="radio">
+                    <input type="radio" name="enemySpeed" value="7">
+                    Fast
+                </label>
+                <label class="radio">
+                    <input type="radio" name="enemySpeed" value="10">
+                    Extreme
+                </label>
+            </div>
+
+            <div> <!--Enemy Spawn Rate-->
+                <p>Enemy Spawn Rate:</p>
+
+                <label class="radio">
+                    <input type="radio" name="enemySpawnRate" value="2000">
+                    Slow
+                </label>
+                <label class="radio">
+                    <input type="radio" name="enemySpawnRate" value="1000" checked>
+                    Medium
+                </label>
+                <label class="radio">
+                    <input type="radio" name="enemySpawnRate" value="750">
+                    Fast
+                </label>
+                <label class="radio">
+                    <input type="radio" name="enemySpawnRate" value="620">
+                    Extreme
+                </label>
+            </div>
+            
+            <div> <!--Number of Lives-->
+                <p>Lives:</p>
+
+                <label class="radio">
+                    <input type="radio" name="lives" value="1">
+                    1
+                </label>
+                <label class="radio">
+                    <input type="radio" name="lives" value="3">
+                    3
+                </label>
+                <label class="radio">
+                    <input type="radio" name="lives" value="5" checked>
+                    5
+                </label>
+                <label class="radio">
+                    <input type="radio" name="lives" value="10">
+                    10
+                </label>
+                <br>
+                <br>
+            </div>
+            
+            <div id="powerups">
+                <h3>Power-ups:</h3>
+
+                <div class="tooltipDiv">
+                    <span class="headerName">Lifesteal:</span>
+                    <span class="tooltipText">Chance to gain a life when potato is killed</span>
+                </div>
+                <br>
+                <label class="radio">
+                    <input type="radio" name="lifesteal" value="0">
+                    Off
+                </label>
+                <label class="radio">
+                    <input type="radio" name="lifesteal" value="1" checked>
+                    On
+                </label>
+                <br>
+                <br>
+                
+                <div class="tooltipDiv">
+                    <span class="headerName">Nuke:</span>
+                    <span class="tooltipText">Chance to clear all potatoes on screen when potato is killed</span>
+                </div>
+                <br>
+                <label class="radio">
+                    <input type="radio" name="nuke" value="0">
+                    Off
+                </label>
+                <label class="radio">
+                    <input type="radio" name="nuke" value="1" checked>
+                    On
+                </label>
+            </div>
+            
+            <div id="handicaps"></div>
+            <br>
+            
+        </div>
+        
+        <!--To-do List:
+            In game file, add power-ups that occasionally spawn
+            speeds up occasionally
+            power-ups: (add ? next to each one that describes it when hovered over)
+                chance to gain a life when potato is killed (called lifesteal)
+                time-stopper (Use [space] key to activate; momentarily pauses the game)pause potato spawn for 3 sec
+                nuke all enemies on screen
+            meter gauge that fills up over time. once powered up, it wipes all potatoes off screen
+            music and sounds
+        -->
+        <script>
+            function toGame() {
+                localStorage.clear(); //clear LS
+
+                //Transfer options to next page
+                var enemySpeedOptions = document.getElementsByName("enemySpeed"); //grab all options
+                for (var i = 0; i < enemySpeedOptions.length; i++) { //loop thru all options
+                    if (enemySpeedOptions[i].checked) { //look for checked option
+                        enemySpeed = enemySpeedOptions[i].value;
+                        localStorage.setItem("enemySpeed", enemySpeed); //save to LS
+                        
+                        break; //don't check the rest
+                    }
+                }
+
+                var enemySpawnRateOptions = document.getElementsByName("enemySpawnRate"); //grab all options
+                for (var i = 0; i < enemySpawnRateOptions.length; i++) { //loop thru all options
+                    if (enemySpawnRateOptions[i].checked) { //look for checked option
+                        enemySpawnRate = enemySpawnRateOptions[i].value;
+                        localStorage.setItem("enemySpawnRate", enemySpawnRate); //save to LS
+                        
+                        break; //don't check the rest
+                    }
+                }
+
+                var livesOptions = document.getElementsByName("lives"); //grab all options
+                for (var i = 0; i < livesOptions.length; i++) { //loop thru all options
+                    if (livesOptions[i].checked) { //look for checked option
+                        lives = livesOptions[i].value;
+                        localStorage.setItem("numOfLives", lives); //save to LS
+                        
+                        break; //don't check the rest
+                    }
+                }
+
+                var lifestealOptions = document.getElementsByName("lifesteal"); //grab all options
+                for (var i = 0; i < lifestealOptions.length; i++) { //loop thru all options
+                    if (lifestealOptions[i].checked) { //look for checked option
+                        lifesteal = lifestealOptions[i].value;
+                        localStorage.setItem("lifesteal", lifesteal); //save to LS
+                        
+                        break; //don't check the rest
+                    }
+                }
+
+                var nukeOptions = document.getElementsByName("nuke"); //grab all options
+                for (var i = 0; i < nukeOptions.length; i++) { //loop thru all options
+                    if (nukeOptions[i].checked) { //look for checked option
+                        nuke = nukeOptions[i].value;
+                        localStorage.setItem("nuke", nuke); //save to LS
+                        
+                        break; //don't check the rest
+                    }
+                }
+
+                location.href="typingGame.html"; //go to game page
+            }
+
+            document.onkeypress = function(e) { //go to game if ENTER is pressed
+                if (e.keyCode == 13) {
+                    toGame();
+                }
+            }
+        </script>
+    </body>
+</html>
